@@ -23,7 +23,13 @@ const styles = StyleSheet.create({
     marginVertical:25,
     marginHorizontal:20,
     borderRadius:8,
-    backgroundColor:'white'
+    backgroundColor:'white',
+    shadowOpacity:0.5,
+        shadowOffset:{
+            width:0,
+            height:0.5
+        },
+        shadowRadius:2,
    },
    textContainer:{
     marginHorizontal: 40 ,marginVertical:20

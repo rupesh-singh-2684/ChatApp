@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, SafeAreaView, Image, Pressable } from "react-native";
+import { View, Text, SafeAreaView, Image, Pressable, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { Icons } from "../../../../assests/icons"; // Corrected path
 
@@ -25,11 +25,11 @@ const Header: React.FC = ({navigation}) => {
             </Text>
           </View>
         </View>
-        <Pressable onPress={handleNav}>
+        <TouchableOpacity onPress={handleNav}>
           <View style={styles.addView}>
         <Image source={Icons.addPhone} style={styles.addIcon} />
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

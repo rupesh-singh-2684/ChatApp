@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignSelf: 'center',
         padding: 14,
+        shadowOpacity:0.5,
+        shadowOffset:{
+            width:0,
+            height:0.5
+        },
+        shadowRadius:2,
       },
       backIcon: {
         tintColor: 'black',
