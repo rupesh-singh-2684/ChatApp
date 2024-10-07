@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
-import { GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { GiftedChat, InputToolbar, Message, User } from 'react-native-gifted-chat';
 import { Icons } from "../../assests/icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -9,68 +9,61 @@ import ReactionModal from "./component/reactionModal";
 import CustomModal from "../../components/customModal";
 import { Images } from "../../assests/images";
 
-const ChatScreen: React.FC = ({ route, navigation }:any) => {
+const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
+    // console.log(route.params)
     const [messages, setMessages] = useState([{}]);
-    // const data  = route.params
     const user = route.params.user;
-    const chatId = route.params.user._id;
-    const refRBSheet:any = useRef();
+    const chatId = route.params.user.id;
+    const refRBSheet: any = useRef();
     const [messageIdToDelete, setMessageIdToDelete] = useState<number | null>(
         null
-      );
+    );
     const [reactionModal, setReactionModal] = useState(false);
     const [toggle, setToggle] = useState(false);
+    const [messageId, setMessageId] = useState<string>('');
     const [reactions, setReactions] = useState<{ [key: number]: string }>({});
     const [isCustomModalVisible, setCustomModalVisible] = useState(false);
 
-    const onLongPress = (context:any, message:any) => {
-        setMessageIdToDelete(message._id); 
-        console.log('id is',message)
+    const onLongPress = (message: any) => {
+        // console.log(message)
+        setMessageIdToDelete(message._id);
+        console.log('id is', message)
         setReactionModal(true);
-      };
+    };
 
-    const handleDeletes = async (id:number) => {
-        console.log('id is',id);
-        
+    const handleDeletes = async (id: number) => {
+        console.log('id is', id);
+
         const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
         const messagesArray = storedMessages ? JSON.parse(storedMessages) : [];
-    
+
         if (Array.isArray(messagesArray)) {
-          const updatedMessagesArray = messagesArray.filter(
-            (message) => message._id !== id
-          );
-          await AsyncStorage.setItem(
-            `messages_${chatId}`,
-            JSON.stringify(updatedMessagesArray)
-          );
-          setMessages(updatedMessagesArray); 
-          setToggle(!toggle);
+            const updatedMessagesArray = messagesArray.filter(
+                (message) => message._id !== id
+            );
+            await AsyncStorage.setItem(
+                `messages_${chatId}`,
+                JSON.stringify(updatedMessagesArray)
+            );
+            setMessages(updatedMessagesArray);
+            setToggle(!toggle);
         } else {
-          console.error("Parsed messages is not an array:", messagesArray);
+            console.error("Parsed messages is not an array:", messagesArray);
         }
-      };
-      const openCustomModal = () => {
+    };
+    const openCustomModal = () => {
         setCustomModalVisible(true);
         closeReactionModal();
-      };
-      const closeCustomModal = () => {
+    };
+    const closeCustomModal = () => {
         setCustomModalVisible(false);
-      };
-      const closeReactionModal = () => {
+    };
+    const closeReactionModal = () => {
         setReactionModal(false);
         // setCustomModalVisible(true);
-      };
-    
-      const handleEmojiPress = (emoji: string) => {
-        if (messageIdToDelete) {
-          setReactions((prevReactions) => ({
-            ...prevReactions,
-            [messageIdToDelete]: emoji,
-          }));
-        }
-        closeReactionModal();
-      };
+    };
 
+    
     useEffect(() => {
         const loadMessages = async () => {
             const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
@@ -89,29 +82,29 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
             }
         };
         loadMessages();
-    }, [chatId]);
-
-    const onSend = async (messages: Messages[] = []) => {
+    }, [chatId,toggle]);
+    
+    const onSend = async (messages: Message[] = []) => {
         setMessages(previousMessages => {
             const updatedMessages = GiftedChat.append(previousMessages, messages);
             AsyncStorage.setItem(`messages_${chatId}`, JSON.stringify(updatedMessages));
             storeChatUser(user);
             return updatedMessages;
+            
         });
     };
-
+    
     const storeChatUser = async (User: any) => {
         const storedChatUsers = await AsyncStorage.getItem('chatUsers');
         const chatUsers = storedChatUsers ? JSON.parse(storedChatUsers) : [];
         // console.log(chatUsers)
-        const userExists = chatUsers.find((u:any) => u._id === User._id);
+        const userExists = chatUsers.find((u: any) => u.id === user.id);
         if (!userExists) {
-            chatUsers.push({ _id: User.id, name: User.name, avatar: User.profileImg });
+            chatUsers.push({ id: user.id, name: user.name, avatar: user.profileImg });
             await AsyncStorage.setItem('chatUsers', JSON.stringify(chatUsers));
         }
         
-    };
-
+    }
     const renderActions = useCallback(() => {
         return (
             <TouchableOpacity style={styles.actionButton}>
@@ -119,6 +112,89 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
             </TouchableOpacity>
         );
     }, []);
+    
+    const renderMessage = (props:any) => {
+        const { currentMessage } = props;
+        // console.log('props...',props.currentMessage)
+        const isUserMessage = currentMessage.user._id === 1;
+        const messageTime = new Date(currentMessage.createdAt).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        return (
+            <>
+            <TouchableOpacity
+              onLongPress={() => onLongPress(props.currentMessage)}
+              style={{
+                  alignSelf: isUserMessage ? 'flex-end' : 'flex-start',
+                  backgroundColor: isUserMessage ? '#0084ff' : '#f0f0f0',
+                  borderRadius: 10,
+                  maxWidth: '80%',
+                  marginHorizontal: 15,
+                  marginBottom: 10,
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                  position: 'relative',
+                }}
+                >
+              <Text
+                style={{
+                    color: isUserMessage ? 'white' : 'black',
+                    fontSize: 16,
+                }}
+                >
+                {currentMessage.text}
+              </Text>
+              {currentMessage.reaction && (
+                  <View
+                  style={{
+                      top: -12,
+                      position: 'absolute',
+                      left: isUserMessage ? -12 : 50,
+                      padding: 5,
+                      backgroundColor: 'transparent',
+                      borderRadius: 10,
+                    }}
+                    >
+                  <Text style={{ color: isUserMessage ? 'white' : 'black' }}>
+                    {currentMessage.reaction}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <Text
+              style={{
+                  marginTop: 10,
+                  marginHorizontal: 20,
+                  fontSize: 10,
+                  color: 'black',
+                  textAlign: isUserMessage ? 'right' : 'left',
+                }}
+                >
+              {messageTime}
+            </Text>
+          </>
+        );
+    };
+    
+    const onEmojiPress = async(emoji:string) => {
+        if (messageIdToDelete) {
+            setMessages((previousMessages) => {
+              const updatedMessages = previousMessages.map((msg) => {
+                if (msg._id === messageIdToDelete) {
+                  return {
+                    ...msg,
+                    reaction: msg.reaction === emoji ? null : emoji,
+                  };
+                }
+                return msg;
+              });
+              AsyncStorage.setItem(`messages_${chatId}`,JSON.stringify(updatedMessages));
+              return updatedMessages;
+            });
+          }
+        closeReactionModal();
+    };
 
     const renderSend = (props: any) => {
         return (
@@ -152,7 +228,7 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
                         </TouchableOpacity>
                         <View style={styles.userInfo}>
                             <View style={styles.profileImgContainer}>
-                                <Text style={styles.profileText}>{user.avatar}</Text>
+                                <Text style={styles.profileText}>{user.profileImg}</Text>
                             </View>
                             <View style={styles.userDetails}>
                                 <Text style={styles.userName}>{user.name}</Text>
@@ -171,8 +247,10 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
                 <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}
-                    user={{ _id: 1 , name :'Current User'}}
+                    user={{ _id: 1, name: 'Current User' }}
                     placeholder="Message..."
+                    alignTop={true}
+                    loadEarlier={true}
                     textInputStyle={styles.textInput}
                     renderInputToolbar={props => (
                         <InputToolbar
@@ -181,6 +259,7 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
                         />
                     )}
                     renderActions={renderActions}
+                    renderMessage = {renderMessage}
                     renderSend={renderSend}
                     onLongPress={onLongPress}
                 />
@@ -218,7 +297,7 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
             <ReactionModal
                 visible={reactionModal}
                 closeModal={closeReactionModal}
-                onEmojiPress={handleEmojiPress}
+                onEmojiPress={onEmojiPress}
                 onDeletePress={openCustomModal}
             />
             <CustomModal
@@ -234,9 +313,9 @@ const ChatScreen: React.FC = ({ route, navigation }:any) => {
                         handleDeletes(messageIdToDelete);
                     }
                     closeCustomModal();
-                    }}
+                }}
                 onSecondButtonPress={() => {
-                setCustomModalVisible(false);
+                    setCustomModalVisible(false);
                 }}
             />
         </>

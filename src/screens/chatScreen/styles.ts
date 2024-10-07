@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: '#F6F6F6',
         borderBottomEndRadius: 15,
         borderBottomStartRadius: 15,
     },

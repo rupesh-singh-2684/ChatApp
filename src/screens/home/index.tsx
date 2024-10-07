@@ -16,21 +16,30 @@ import { ScreenNames } from "../../navigator/screennames";
 interface ChatUser {
     _id: number; 
     name: string;
-    avatar?: string; 
-    lastMessage?: string;
-    timestamp?: string; 
+    avatar: string; 
+    lastMessage: string;
+    timestamp: string; 
 }
-const Home: React.FC<{ navigation:any}> = ({ }) => {
+const Home: React.FC<{ navigation:any}> = () => {
     const [isProfileChoiceVisible, setProfileChoiceVisible] = useState(false);
     const [chatUsers, setChatUsers] = useState<ChatUser[]>([]);
     const navigation: any = useNavigation();
+
     const randomColor = require('randomcolor');
+     
+    const [fetchdata, setdata] = useState([]);
+    const [hasSearch, setHasSearched] = useState(false);
+    const [filtersearch, setfiltersearch] = useState([]);
+
+
 
     const profilePicker = () => {
         setProfileChoiceVisible(prevState => !prevState);
     };
-    const handleSearch = () =>{
-
+    const handleSearch = (user: any, hasSearch: any, filtersearch: any) =>{
+      setdata(user);
+      setHasSearched(hasSearch);
+      setfiltersearch(filtersearch);
     }
     useEffect(() => {
         const loadChatUsers = async () => {
@@ -42,14 +51,9 @@ const Home: React.FC<{ navigation:any}> = ({ }) => {
             // console.log(chatUsers)
         }
         };
-      
         loadChatUsers();
         }, [chatUsers]);
-      
-        const clearChatUsers = async () => {
-          await AsyncStorage.clear();
-          setChatUsers([]); 
-        };
+
         const getInitials = (name: string) => {
           const names = name.split(' ');
           return names.map(word => word.charAt(0).toUpperCase()).join('');
@@ -59,8 +63,8 @@ const Home: React.FC<{ navigation:any}> = ({ }) => {
             <Header navigation={navigation}/>
             <View style={styles.container}>
                 <SearchInput source={Icons.SearchIcon} 
-                Senddata={handleSearch}/>
-                
+                 Senddata={handleSearch}/>
+
                 {chatUsers.length === 0 ? (
                 <>
                 <View style={styles.contentContainer}>
@@ -88,7 +92,7 @@ const Home: React.FC<{ navigation:any}> = ({ }) => {
                     renderItem={({ item }) => (
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.navigate(ScreenNames.ChatScreen, { user: item })
+                          navigation.navigate(ScreenNames.ChatScreen, { user : item })
                         }
                       >
                         <View style={styles.box1}>

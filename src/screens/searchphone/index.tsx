@@ -57,7 +57,7 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
           <View style={styles.flatListMainContainer}>
             <FlatList
               data={filtersearch}
-              keyExtractor={(item) =>item._id.toString()}
+              // keyExtractor={(item) =>item._id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.flatListContainer} onPress={() => handleNavigation(item)}>
                   <View style={[styles.profileImg, { backgroundColor: randomColor() }]}>
