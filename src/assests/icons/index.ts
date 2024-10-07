@@ -14,8 +14,11 @@ const Icons = {
     pinIcon: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/pinIcon.png'),
     send: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/send.png'),
     addPhone: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/AddPhone.png'),
-
-
+    like: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/like.png'),
+    dislike: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/dislike.png'),
+    love:require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/love.png'),
+    laugh: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/laugh.png'),
+    celebration: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/celebratation.png'),
 
 };
 export {Icons};

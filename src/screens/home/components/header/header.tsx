@@ -13,20 +13,22 @@ const Header: React.FC = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={styles.containerView}>
         <View style={{ flexDirection: 'row' }}>
           {/* <Image source={Icons.BackIcon} style={styles.backIcon} /> */}
-          <View style={{ marginHorizontal: 40 ,marginVertical:20}}>
-            <Text style={{ fontSize: 18, color: 'white', fontWeight: '600', marginBottom: 10 }}>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>
               Messages
             </Text>
-            <Text style={{ fontSize: 13 ,color: 'white'}}>
+            <Text style={styles.contact}>
               45 contacts
             </Text>
           </View>
         </View>
         <Pressable onPress={handleNav}>
-        <Image source={Icons.Notifications} style={styles.addIcon} />
+          <View style={styles.addView}>
+        <Image source={Icons.addPhone} style={styles.addIcon} />
+          </View>
         </Pressable>
       </View>
     </SafeAreaView>

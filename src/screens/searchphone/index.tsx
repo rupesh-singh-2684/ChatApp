@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { SafeAreaView, View, Text, Image, TouchableOpacity, FlatList } from "react-native";
-import { Icons } from "../../assests/icons"; // Corrected path
+import { Icons } from "../../assests/icons";
 import SearchInput from "../component/searchInput/searchInput";
-import { Images } from "../../assests/images"; // Corrected path
+import { Images } from "../../assests/images";
 import styles from "./styles";
 
 interface SearchPhoneProps {
   navigation: {
     navigate: (screen: string) => void;
   };
+  _id:number;
 }
 
 const randomColor = require('randomcolor');
@@ -31,7 +32,7 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
 
   const handleNavigation = useCallback((item: any) => {
     console.log(item);
-    navigation.navigate('ChatScreen', { user: item });
+    navigation.navigate('ChatScreen', { user:item });
   }, []);
  
   return (
@@ -56,6 +57,7 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
           <View style={styles.flatListMainContainer}>
             <FlatList
               data={filtersearch}
+              keyExtractor={(item) =>item._id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.flatListContainer} onPress={() => handleNavigation(item)}>
                   <View style={[styles.profileImg, { backgroundColor: randomColor() }]}>
@@ -69,7 +71,6 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               )}
-              // keyExtractor={(item) =>item.id.toString()}
             />
           </View>
         ) : (

@@ -50,8 +50,6 @@ const Home: React.FC<{ navigation:any}> = ({ }) => {
           await AsyncStorage.clear();
           setChatUsers([]); 
         };
-      
-        // Function to get initials from the name
         const getInitials = (name: string) => {
           const names = name.split(' ');
           return names.map(word => word.charAt(0).toUpperCase()).join('');

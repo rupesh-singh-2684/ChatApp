@@ -24,19 +24,19 @@ const ReactionModal = ({ visible, closeModal,onEmojiPress,onDeletePress }: Secur
                     <View style={styles.modalView}>
                     <View style={styles.emoji}>
                             <TouchableOpacity onPress={() => onEmojiPress('👍')}>
-                                <Image source={Icons.deleteIcon} style={styles.emojiIcon} />
+                                <Image source={Icons.like} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('❤️')}>
-                                <Image source={Icons.deleteIcon} style={styles.emojiIcon} />
+                                <Image source={Icons.love} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('😂')}>
-                                <Image source={Icons.deleteIcon} style={styles.emojiIcon} />
+                                <Image source={Icons.laugh} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('🎉')}>
-                                <Image source={Icons.deleteIcon} style={styles.emojiIcon} />
+                                <Image source={Icons.celebration} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('👎')}>
-                                <Image source={Icons.deleteIcon} style={styles.emojiIcon} />
+                                <Image source={Icons.dislike} style={styles.emojiIcon} />
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity>
