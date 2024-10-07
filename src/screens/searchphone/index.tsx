@@ -61,7 +61,7 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.flatListContainer} onPress={() => handleNavigation(item)}>
                   <View style={[styles.profileImg, { backgroundColor: randomColor() }]}>
-                    <Text style={styles.text1}>{item.profileImg}</Text>
+                    <Text style={styles.text1}>{item.avatar}</Text>
                   </View>
                   <View style={styles.container2}>
                     <Text style={styles.text2}>{item.name}</Text>

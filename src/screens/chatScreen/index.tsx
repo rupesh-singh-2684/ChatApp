@@ -100,7 +100,7 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
         // console.log(chatUsers)
         const userExists = chatUsers.find((u: any) => u.id === user.id);
         if (!userExists) {
-            chatUsers.push({ id: user.id, name: user.name, avatar: user.profileImg });
+            chatUsers.push({ id: user.id, name: user.name, avatar: user.avatar });
             await AsyncStorage.setItem('chatUsers', JSON.stringify(chatUsers));
         }
         
@@ -228,7 +228,7 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
                         </TouchableOpacity>
                         <View style={styles.userInfo}>
                             <View style={styles.profileImgContainer}>
-                                <Text style={styles.profileText}>{user.profileImg}</Text>
+                                <Text style={styles.profileText}>{user.avatar}</Text>
                             </View>
                             <View style={styles.userDetails}>
                                 <Text style={styles.userName}>{user.name}</Text>

@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
         borderRadius:8,
         borderColor:'white',
 
-        shadowOpacity:0.5,
-        shadowOffset:{
-            width:0,
-            height:0.5
-        },
-        shadowRadius:2
+        // shadowOpacity:0.5,
+        // shadowOffset:{
+        //     width:0,
+        //     height:0.5
+        // },
+        // shadowRadius:2
     },
     searchInput:{
         borderWidth:.3,
