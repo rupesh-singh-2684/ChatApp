@@ -24,12 +24,13 @@ const Home: React.FC<{ navigation:any}> = () => {
     const [isProfileChoiceVisible, setProfileChoiceVisible] = useState(false);
     const [chatUsers, setChatUsers] = useState<ChatUser[]>([]);
     const navigation: any = useNavigation();
-
+    const [lastMessage, setlastMessage] = useState('')
     const randomColor = require('randomcolor');
      
     const [fetchdata, setdata] = useState([]);
     const [hasSearch, setHasSearched] = useState(false);
     const [filtersearch, setfiltersearch] = useState([]);
+
 
 
 
@@ -48,7 +49,9 @@ const Home: React.FC<{ navigation:any}> = () => {
         if (storedChatUsers) {
             const parsedUsers = JSON.parse(storedChatUsers);
             setChatUsers(parsedUsers);
-            // console.log(chatUsers)
+
+            
+            // setlastMessage(chatUsers.lastMessage)
         }
         };
         loadChatUsers();
@@ -64,6 +67,37 @@ const Home: React.FC<{ navigation:any}> = () => {
             <View style={styles.container}>
                 <SearchInput source={Icons.SearchIcon} 
                  Senddata={handleSearch}/>
+{/* 
+                  {hasSearch ? (
+                  filtersearch.length > 0 ? (
+                    <View style={styles.flatListMainContainer}>
+                      <FlatList
+                        data={filtersearch}
+                        // keyExtractor={(item) =>item._id.toString()}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity style={styles.flatListContainer} onPress={() => handleNavigation(item)}>
+                            <View style={[styles.profileImg]}>
+                              <Text style={styles.text1}>{item.avatar}</Text>
+                            </View>
+                            <View style={styles.container2}>
+                              <Text style={styles.text2}>{item.name}</Text>
+                              <Text style={styles.text3}>
+                                You: I don't remember anything
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                      />
+                    </View>
+                  ) : (
+                    <View style={styles.noResultContainer}>
+                      <Image
+                        source={Images.NoResultImg}
+                        style={styles.noResultImage}
+                      />
+                    </View>
+                  )
+                ) : null} */}
 
                 {chatUsers.length === 0 ? (
                 <>
@@ -91,9 +125,9 @@ const Home: React.FC<{ navigation:any}> = () => {
                     // keyExtractor={(item) => item._id.toString()}
                     renderItem={({ item }) => (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate(ScreenNames.ChatScreen, { user : item })
-                        }
+                      onPress={() =>
+                        navigation.navigate(ScreenNames.ChatScreen, { user : item })
+                      }
                       >
                         <View style={styles.box1}>
                           <View style={styles.profilePictureContainer}>
@@ -106,16 +140,16 @@ const Home: React.FC<{ navigation:any}> = () => {
       
                           <View style={styles.userInfo}>
                             <Text style={styles.text}>{item.name}</Text>
-                            {item.lastMessage && (
+                              { item.lastMessage  &&
                                 <Text style={styles.lastMessageText}>
-                                {item.lastMessage} 
+                                {item.lastMessage ? item.lastMessage:'Start Chat'} 
                                 </Text>
-                            )}
+                               }
                             </View>
                         </View>
                       </TouchableOpacity>
                     )}
-                  />
+                    />
                 </View>
               )}
             </View>

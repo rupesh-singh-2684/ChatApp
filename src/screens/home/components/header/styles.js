@@ -24,21 +24,26 @@ const styles = StyleSheet.create({
     marginHorizontal:20,
     borderRadius:8,
     backgroundColor:'white',
-    shadowOpacity:0.5,
-        shadowOffset:{
-            width:0,
-            height:0.5
-        },
-        shadowRadius:2,
+    // shadowOpacity:0.5,
+    //     shadowOffset:{
+    //         width:0,
+    //         height:0.5
+    //     },
+    //     shadowRadius:2,
    },
    textContainer:{
-    marginHorizontal: 40 ,marginVertical:20
+    marginHorizontal: 40,
+    marginVertical:20
    },
    title:{
-    fontSize: 18, color: 'white', fontWeight: '600', marginBottom: 10 
+    fontSize: 18, 
+    color: 'white', 
+    fontWeight: '600', 
+    marginBottom: 10 
    },
    contact:{
-    fontSize: 13 ,color: 'white'
+    fontSize: 13,
+    color: 'white'
    }
 })
 export default styles;

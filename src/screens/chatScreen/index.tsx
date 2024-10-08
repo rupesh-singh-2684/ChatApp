@@ -67,6 +67,8 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
     useEffect(() => {
         const loadMessages = async () => {
             const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
+            
+
             if (storedMessages) {
                 setMessages(JSON.parse(storedMessages));
             } else {
@@ -88,19 +90,20 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
         setMessages(previousMessages => {
             const updatedMessages = GiftedChat.append(previousMessages, messages);
             AsyncStorage.setItem(`messages_${chatId}`, JSON.stringify(updatedMessages));
-            storeChatUser(user);
+            storeChatUser(user,updatedMessages);
             return updatedMessages;
             
         });
     };
     
-    const storeChatUser = async (User: any) => {
+    const storeChatUser = async (User: any,updatedMessages) => {
+        
         const storedChatUsers = await AsyncStorage.getItem('chatUsers');
         const chatUsers = storedChatUsers ? JSON.parse(storedChatUsers) : [];
         // console.log(chatUsers)
         const userExists = chatUsers.find((u: any) => u.id === user.id);
         if (!userExists) {
-            chatUsers.push({ id: user.id, name: user.name, avatar: user.avatar });
+            chatUsers.push({ id: user.id, name: user.name, avatar: user.avatar});
             await AsyncStorage.setItem('chatUsers', JSON.stringify(chatUsers));
         }
         
@@ -148,7 +151,7 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
               {currentMessage.reaction && (
                   <View
                   style={{
-                      top: -12,
+                      top: 25,
                       position: 'absolute',
                       left: isUserMessage ? -12 : 50,
                       padding: 5,
