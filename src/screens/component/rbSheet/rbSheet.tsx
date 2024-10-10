@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import styles from './styles';
 import { Icons } from '../../../assests/icons';
@@ -31,6 +31,7 @@ const RbSheet: React.FC<RbSheetProps> = ({
     <RBSheet
       ref={refRBSheet}
       closeOnPressMask
+      height={Dimensions.get('window').height/6.8}
       useNativeDriver={false}
       customStyles={{
         wrapper:styles.wrapper,

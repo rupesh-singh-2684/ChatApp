@@ -11,6 +11,11 @@ interface SearchPhoneProps {
   };
   _id:number;
 }
+interface ContactItem {
+  id: string;
+  name: string;
+ 
+}
 
 const randomColor = require('randomcolor');
 
@@ -18,20 +23,22 @@ const SearchPhone: React.FC<SearchPhoneProps> = ({ navigation }) => {
   const [fetchdata, setdata] = useState([]);
   const [hasSearch, setHasSearched] = useState(false);
   const [filtersearch, setfiltersearch] = useState([]);
+  
 
   const handleSenddata = (user: any, hasSearch: any, filtersearch: any) => {
     setdata(user);
     setHasSearched(hasSearch);
     setfiltersearch(filtersearch);
-    console.log(fetchdata);
+    // console.log(fetchdata);
   };
+
 
   const handleNav = () => {
     navigation.navigate('Home');
   };
 
   const handleNavigation = useCallback((item: any) => {
-    console.log(item);
+    // console.log(item);
     navigation.navigate('ChatScreen', { user:item });
   }, []);
  

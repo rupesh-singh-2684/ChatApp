@@ -9,13 +9,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderRadius:8,
         borderColor:'white',
-
-        // shadowOpacity:0.5,
-        // shadowOffset:{
-        //     width:0,
-        //     height:0.5
-        // },
-        // shadowRadius:2
+        alignItems:'center'
     },
     searchInput:{
         borderWidth:.3,
@@ -31,6 +25,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center', 
         marginVertical: 10, 
         marginStart: 10
-    }
+    },
+    cross: {
+        // marginHorizontal: 20,
+        // marginVertical:30,
+        height: 15,
+        width: 15,
+        left:15
+        // position:'absolute'
+    
+      },
 })
 export default styles;

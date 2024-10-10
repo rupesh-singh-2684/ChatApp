@@ -35,10 +35,17 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: '#85929C',
       },
+      // cross: {
+      //   marginHorizontal:20,
+      //   height: 18,
+      //   width: 18,
+      // },
       cross: {
-        marginHorizontal:20,
+        // marginHorizontal: 20,
+        marginVertical:30,
         height: 18,
         width: 18,
+        // position:'absolute'
       },
       container2: {
         marginLeft: 10,
@@ -71,7 +78,13 @@ const styles = StyleSheet.create({
         width: 20,
       },
       searchInputContainer: {
-        marginEnd: 20,
+        // marginEnd: 20,
+        flexDirection:'row',
+        // backgroundColor:'red',
+        borderRadius:10,
+        // marginHorizontal:20,
+        // marginVertical:20,
+        
       },
       noResultContainer: {
         alignSelf: 'center',

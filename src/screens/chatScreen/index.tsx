@@ -11,28 +11,108 @@ import { Images } from "../../assests/images";
 
 const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
     // console.log(route.params)
-    const [messages, setMessages] = useState([{}]);
     const user = route.params.user;
     const chatId = route.params.user.id;
+    const [messages, setMessages] = useState([{}]);
     const refRBSheet: any = useRef();
-    const [messageIdToDelete, setMessageIdToDelete] = useState<number | null>(
-        null
-    );
+    const [messageIdDelete, setMessageIdDelete] = useState<number | null>(null);
     const [reactionModal, setReactionModal] = useState(false);
     const [toggle, setToggle] = useState(false);
-    const [messageId, setMessageId] = useState<string>('');
-    const [reactions, setReactions] = useState<{ [key: number]: string }>({});
     const [isCustomModalVisible, setCustomModalVisible] = useState(false);
+    const [inputText, setinputText] = useState('')
 
+    useEffect(() => {
+        const loadMessages = async () => {
+            const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
+            if (storedMessages) {
+                setMessages(JSON.parse(storedMessages));
+            } else {
+                setMessages([{
+                    _id: 1,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                    },
+                }]);
+            }
+        };
+        loadMessages();
+    }, [chatId,toggle]);
+    
+    const storeUser = async (User: any,updatedMessages) => {
+        const storedChatUsers = await AsyncStorage.getItem('chatUsers');
+        const chatUsers = storedChatUsers ? JSON.parse(storedChatUsers) : [];
+        // console.log(chatUsers)
+        const userExists = chatUsers.find((u: any) => u.id === user.id);
+        if (!userExists) {
+            chatUsers.push({ id: user.id, name: user.name, avatar: user.avatar});
+            await AsyncStorage.setItem('chatUsers', JSON.stringify(chatUsers));
+        }
+    }
+
+    const onSend = async (messages: Message[] = []) => {
+        setMessages(previousMessages => {
+            const updatedMessages = GiftedChat.append(previousMessages, messages);
+            AsyncStorage.setItem(`messages_${chatId}`, JSON.stringify(updatedMessages));
+            storeUser(user,updatedMessages);
+            return updatedMessages;
+            
+        });
+        setinputText('')
+    };
+
+    const renderActions = useCallback(() => {
+        return (
+            <TouchableOpacity style={styles.actionButton}>
+                <Image source={Icons.addPhone} style={styles.actionIcon} />
+            </TouchableOpacity>
+        );
+    }, []);
+    
+    const renderMessage = (props:any) => {
+        const { currentMessage } = props;
+        const isUserMessage = currentMessage.user._id === 1;
+        const messageTime = new Date(currentMessage.createdAt).toLocaleTimeString([],
+            { hour: '2-digit', minute: '2-digit' });
+        return (
+            <>
+            <TouchableOpacity
+              onLongPress={() => onLongPress(props.currentMessage)}
+              style={[ styles.messageView ,{
+                  alignSelf: isUserMessage ? 'flex-end' : 'flex-start',
+                  backgroundColor: isUserMessage ? '#0084ff' : '#f0f0f0',
+                }]}
+                >
+              <Text style={[ styles.messageText,{color: isUserMessage ? 'white' : 'black'}]}>
+                {currentMessage.text}
+              </Text>
+
+              {currentMessage.reaction && (
+                <View style={[ styles.reactionView,{right: isUserMessage ? 0 : 'auto',top :isUserMessage ? '100%':'100%'}]}>
+                  <Text style={{ color: isUserMessage ? 'white' : 'black' ,}}>
+                    {currentMessage.reaction}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <Text style={[ styles.timeTextView,{textAlign: isUserMessage ? 'right' : 'left'}]}>
+              {messageTime}
+            </Text>
+          </>
+        );
+    };
+    
     const onLongPress = (message: any) => {
         // console.log(message)
-        setMessageIdToDelete(message._id);
-        console.log('id is', message)
+        setMessageIdDelete(message._id);
+        // console.log('id is', message)
         setReactionModal(true);
     };
 
     const handleDeletes = async (id: number) => {
-        console.log('id is', id);
+        // console.log('id is', id);
 
         const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
         const messagesArray = storedMessages ? JSON.parse(storedMessages) : [];
@@ -60,137 +140,20 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
     };
     const closeReactionModal = () => {
         setReactionModal(false);
-        // setCustomModalVisible(true);
     };
 
-    
-    useEffect(() => {
-        const loadMessages = async () => {
-            const storedMessages = await AsyncStorage.getItem(`messages_${chatId}`);
-            
-
-            if (storedMessages) {
-                setMessages(JSON.parse(storedMessages));
-            } else {
-                setMessages([{
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                    },
-                }]);
-            }
-        };
-        loadMessages();
-    }, [chatId,toggle]);
-    
-    const onSend = async (messages: Message[] = []) => {
-        setMessages(previousMessages => {
-            const updatedMessages = GiftedChat.append(previousMessages, messages);
-            AsyncStorage.setItem(`messages_${chatId}`, JSON.stringify(updatedMessages));
-            storeChatUser(user,updatedMessages);
-            return updatedMessages;
-            
-        });
-    };
-    
-    const storeChatUser = async (User: any,updatedMessages) => {
-        
-        const storedChatUsers = await AsyncStorage.getItem('chatUsers');
-        const chatUsers = storedChatUsers ? JSON.parse(storedChatUsers) : [];
-        // console.log(chatUsers)
-        const userExists = chatUsers.find((u: any) => u.id === user.id);
-        if (!userExists) {
-            chatUsers.push({ id: user.id, name: user.name, avatar: user.avatar});
-            await AsyncStorage.setItem('chatUsers', JSON.stringify(chatUsers));
-        }
-        
-    }
-    const renderActions = useCallback(() => {
-        return (
-            <TouchableOpacity style={styles.actionButton}>
-                <Image source={Icons.addPhone} style={styles.actionIcon} />
-            </TouchableOpacity>
-        );
-    }, []);
-    
-    const renderMessage = (props:any) => {
-        const { currentMessage } = props;
-        // console.log('props...',props.currentMessage)
-        const isUserMessage = currentMessage.user._id === 1;
-        const messageTime = new Date(currentMessage.createdAt).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-        return (
-            <>
-            <TouchableOpacity
-              onLongPress={() => onLongPress(props.currentMessage)}
-              style={{
-                  alignSelf: isUserMessage ? 'flex-end' : 'flex-start',
-                  backgroundColor: isUserMessage ? '#0084ff' : '#f0f0f0',
-                  borderRadius: 10,
-                  maxWidth: '80%',
-                  marginHorizontal: 15,
-                  marginBottom: 10,
-                  paddingHorizontal: 15,
-                  paddingVertical: 10,
-                  position: 'relative',
-                }}
-                >
-              <Text
-                style={{
-                    color: isUserMessage ? 'white' : 'black',
-                    fontSize: 16,
-                }}
-                >
-                {currentMessage.text}
-              </Text>
-              {currentMessage.reaction && (
-                  <View
-                  style={{
-                      top: 25,
-                      position: 'absolute',
-                      left: isUserMessage ? -12 : 50,
-                      padding: 5,
-                      backgroundColor: 'transparent',
-                      borderRadius: 10,
-                    }}
-                    >
-                  <Text style={{ color: isUserMessage ? 'white' : 'black' }}>
-                    {currentMessage.reaction}
-                  </Text>
-                </View>
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{
-                  marginTop: 10,
-                  marginHorizontal: 20,
-                  fontSize: 10,
-                  color: 'black',
-                  textAlign: isUserMessage ? 'right' : 'left',
-                }}
-                >
-              {messageTime}
-            </Text>
-          </>
-        );
-    };
     
     const onEmojiPress = async(emoji:string) => {
-        if (messageIdToDelete) {
+        if (messageIdDelete) {
             setMessages((previousMessages) => {
-              const updatedMessages = previousMessages.map((msg) => {
-                if (msg._id === messageIdToDelete) {
+              const updatedMessages = previousMessages.map((message) => {
+                if (message._id === messageIdDelete) {
                   return {
-                    ...msg,
-                    reaction: msg.reaction === emoji ? null : emoji,
+                    ...message,
+                    reaction: message.reaction === emoji ? null : emoji,
                   };
                 }
-                return msg;
+                return message;
               });
               AsyncStorage.setItem(`messages_${chatId}`,JSON.stringify(updatedMessages));
               return updatedMessages;
@@ -204,6 +167,8 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
             <TouchableOpacity
                 style={styles.sendButton}
                 onPress={() => {
+                    const messageText =inputText.trim();
+                    if (messageText && messageText.trim())
                     onSend();
                     props?.onSend([{
                         _id: 1,
@@ -214,6 +179,7 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
                             name: 'React Native',
                         },
                     }]);
+                    setinputText('')
                 }}>
                 <Image source={Icons.send} style={styles.sendIcon} />
             </TouchableOpacity>
@@ -253,7 +219,9 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
                     user={{ _id: 1, name: 'Current User' }}
                     placeholder="Message..."
                     alignTop={true}
-                    loadEarlier={true}
+                    onInputTextChanged={setinputText}
+                    text={inputText}
+                    // loadEarlier={true}
                     textInputStyle={styles.textInput}
                     renderInputToolbar={props => (
                         <InputToolbar
@@ -269,14 +237,12 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
             </View>
             <RBSheet
                 ref={refRBSheet}
-                height={Dimensions.get('window').height / 2.5}
+                // height={Dimensions.get('window').height / 2.5}
                 useNativeDriver={false}
                 dragOnContent={true}
-                // style={styles.bottomSheet}
                 customStyles={{
                     container: styles.bottomSheetContainer,
                     wrapper: styles.bottomSheetWrapper,
-                    draggableIcon: styles.bottomSheetDraggableIcon,
                 }}>
                 <View style={styles.RBContainer}>
                     <TouchableOpacity style={styles.RBContainerItem}>
@@ -306,14 +272,14 @@ const ChatScreen: React.FC = ({ route, navigation ,}: any) => {
             <CustomModal
                 visible={isCustomModalVisible}
                 title="Delete Message?"
-                description="Are you sure you want to delete this message?"
+                description="Are you sure to delete this message?"
                 imageSource={Icons.deleteIcon}
                 buttonText="Yes, Delete"
                 secondButtonText="Cancel"
                 closeModal={() => setCustomModalVisible(false)}
                 onButtonPress={() => {
-                    if (messageIdToDelete) {
-                        handleDeletes(messageIdToDelete);
+                    if (messageIdDelete) {
+                        handleDeletes(messageIdDelete);
                     }
                     closeCustomModal();
                 }}

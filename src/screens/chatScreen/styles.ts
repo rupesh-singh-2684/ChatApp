@@ -106,13 +106,15 @@ const styles = StyleSheet.create({
     // },
     bottomSheetContainer: {
         borderRadius: 30,
+        flex:0.7
     },
     bottomSheetWrapper: {
         backgroundColor: 'rgba(0,0,0,0.5)',
+        flex:1
     },
-    bottomSheetDraggableIcon: {
-        backgroundColor: '#000',
-    },
+    // bottomSheetDraggableIcon: {
+    //     backgroundColor: '#000',
+    // },
     RBContainer: {
         paddingHorizontal: 24,
         borderRadius: 30,
@@ -148,6 +150,32 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
     },
+    messageView:{
+        borderRadius: 10,
+        maxWidth: '80%',
+        marginHorizontal: 15,
+        marginBottom: 10,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        position: 'relative',
+    },
+    messageText:{
+        fontSize: 16,
+    },
+    reactionView:{
+        position: 'absolute',
+        paddingVertical: 10,
+        backgroundColor: 'transparent',
+        borderRadius: 10,
+        // alignItems:'flex-end'
+    },
+    timeTextView:{
+        marginTop: 10,
+        marginHorizontal: 20,
+        fontSize: 10,
+        color: 'black',
+    }
+
 });
 
 

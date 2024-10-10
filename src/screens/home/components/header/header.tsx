@@ -2,11 +2,17 @@ import React from "react";
 import { View, Text, SafeAreaView, Image, Pressable, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { Icons } from "../../../../assests/icons"; // Corrected path
+import { useNavigation } from "@react-navigation/native";
 
+interface CustomModalProps {
+  contacts: string;
+  navigation: any;
+}
 
+const Header: React.FC = (props:CustomModalProps) => {
+  const { contacts } = props;
 
-const Header: React.FC = ({navigation}) => {
-
+  const navigation = useNavigation()
   const handleNav = () => {
     navigation.navigate('SearchPhone');
   };
@@ -21,7 +27,7 @@ const Header: React.FC = ({navigation}) => {
               Messages
             </Text>
             <Text style={styles.contact}>
-              45 contacts
+              {contacts} contacts
             </Text>
           </View>
         </View>

@@ -19,6 +19,7 @@ const Icons = {
     love:require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/love.png'),
     laugh: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/laugh.png'),
     celebration: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/celebratation.png'),
-
+    cross: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/close.png'),
+    pin: require('/Users/admin/Desktop/BottomTabBar/src/assests/icons/pin.png'),
 };
 export {Icons};

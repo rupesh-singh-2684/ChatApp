@@ -4,14 +4,14 @@ import styles from './styles';
 import { Icons } from '../../../../assests/icons';
 
 
-interface SecureAccountModalProps {
+interface ModalProps {
     visible: boolean;
     closeModal: () => void;
     onEmojiPress: (emoji: string) => void;
     onDeletePress?: () => void; 
 }
 
-const ReactionModal = ({ visible, closeModal,onEmojiPress,onDeletePress }: SecureAccountModalProps) => {
+const ReactionModal = ({ visible, closeModal,onEmojiPress,onDeletePress }: ModalProps) => {
     return (
         <Modal
             animationType="slide"
@@ -22,21 +22,21 @@ const ReactionModal = ({ visible, closeModal,onEmojiPress,onDeletePress }: Secur
             <TouchableOpacity style={styles.modalBackground} activeOpacity={1} onPress={closeModal}>
                 <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
                     <View style={styles.modalView}>
-                    <View style={styles.emoji}>
+                        <View style={styles.emoji}>
                             <TouchableOpacity onPress={() => onEmojiPress('👍')}>
                                 <Image source={Icons.like} style={styles.emojiIcon} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => onEmojiPress('❤️')}>
-                                <Image source={Icons.love} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('😂')}>
                                 <Image source={Icons.laugh} style={styles.emojiIcon} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => onEmojiPress('🎉')}>
-                                <Image source={Icons.celebration} style={styles.emojiIcon} />
+                            <TouchableOpacity onPress={() => onEmojiPress('❤️')}>
+                                <Image source={Icons.love} style={styles.emojiIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => onEmojiPress('👎')}>
                                 <Image source={Icons.dislike} style={styles.emojiIcon} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => onEmojiPress('🥰')}>
+                                <Image source={Icons.celebration} style={styles.emojiIcon} />
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity>
@@ -48,7 +48,7 @@ const ReactionModal = ({ visible, closeModal,onEmojiPress,onDeletePress }: Secur
 
                         <TouchableOpacity>
                             <View style={styles.optionContainer}>
-                                <Image source={Icons.eyeIcon} style={styles.optionIcon} />
+                                <Image source={Icons.pin} style={styles.optionIcon} />
                                 <Text style={styles.modalOptionText}>Unpin Chat</Text>
                             </View>
                         </TouchableOpacity>

@@ -9,23 +9,23 @@ const styles = StyleSheet.create({
     optionContainer: {
         padding: 20,
         backgroundColor: colors.white,
-        borderRadius: 10,
-        borderWidth: 1,
+        // borderRadius: 10,
+        borderBottomWidth: 1,
         borderColor: '#ddd',
         width: '100%',
         alignItems: 'center',
         flexDirection: 'row',
-    
+        // justifyContent:'center'
     },
     modalContainer: {
         width: '100%',
         backgroundColor: 'white',
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
         alignItems: 'center',
     },
     modalView: {
-        width: '100%',
+        width: '90%',
     },
     modalOptionText: {
         fontSize: 16,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         textAlign: 'center',
         marginLeft: 20,
+        fontWeight:'500'
     },
     modalOptionText1: {
         fontSize: 16,
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         textAlign: 'center',
         marginLeft: 20,
+        fontWeight:'500'
     },
     
     optionIcon: {
@@ -49,21 +51,20 @@ const styles = StyleSheet.create({
     },
     emoji:{
         flexDirection:'row',
-        padding: 26,
+        padding: 20,
         backgroundColor: colors.white,
         borderRadius:20,
         width: '100%',
         alignItems: 'center',
-       justifyContent:'space-between',
-       margin:10
-    
+        justifyContent:'space-between',
+        margin:10,
+        borderBottomWidth:1,
+        borderColor: '#ddd',
     },
     emojiIcon:{
-       
-            width: 35,
-            height: 35,
-            marginRight: 10,
-        
+        width: 35,
+        height: 35,
+        marginRight: 10,
     }
 });
 

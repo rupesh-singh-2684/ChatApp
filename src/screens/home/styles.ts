@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import colors from "../../theme/colors";
 
 const styles =  StyleSheet.create({
@@ -43,6 +43,7 @@ const styles =  StyleSheet.create({
       userInfo: {
         marginLeft: 10, 
         flex: 1,
+        // justifyContent:'center'
       },
       profileSection: {
         alignItems: 'center',
@@ -61,7 +62,7 @@ const styles =  StyleSheet.create({
         width: 50, 
         height: 50,
         borderRadius: 25, 
-        backgroundColor: colors.black,
+        // backgroundColor: randomColor(),
         justifyContent: 'center', 
         alignItems: 'center', 
         overflow: 'hidden', 
@@ -75,17 +76,18 @@ const styles =  StyleSheet.create({
       text:{
         fontWeight:'500',
         alignSelf:'flex-start',
-        fontSize:20,
+        fontSize:18,
         marginBottom:10,
       
       },
       listContainer: {
+        flex:1,
         padding: 5,
         alignContent: 'space-between',
-        margin: 20,
+        marginHorizontal: 16,
         backgroundColor: '#F8F9F9',
-        width:'90%',
         borderRadius: 10,
+        marginVertical:0
       },
 
 
@@ -130,5 +132,38 @@ const styles =  StyleSheet.create({
         justifyContent: 'space-between',
       },
 
+
+
+
+      search: {
+        height: 20,
+        width: 20,
+        marginRight: 10,
+      },
+      container6: {
+        flex: 1,
+        backgroundColor: '#E7EDF3',
+      },
+      containerSearch: {
+        flexWrap: 'wrap',
+        alignItems:'center',
+        flexDirection: 'row',
+        marginHorizontal: 16,
+        marginVertical: 19,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        paddingVertical: Platform.OS === 'ios' ? 15 : 0,
+        paddingHorizontal: 15,
+    
+        // shadowOpacity: 0.5,
+        // shadowOffset: {
+        //   width: 0,
+        //   height: 2,
+        // },
+        // shadowRadius: 2,
+      },
+      inputcontainer: {
+        width: '90%',
+      },
       });
 export default styles;
